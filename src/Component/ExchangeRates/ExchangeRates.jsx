@@ -1,15 +1,24 @@
-import {useQuery, gql} from "@apollo/client";
+import { useQuery, gql } from "@apollo/client";
 
-function ExchangeRates() {
-  const { loading, error, data } = useQuery(gql`
-    {
-      rates(currency: "USD") {
-        currency
-        rate
-      }
+const Currency = gql`
+  query getRates($currency: String!){
+    rates(currency: $currency) {
+      currency
+      rate
     }
-  `);
+  }`;
+
+function ExchangeRates(props) {
+  const { loading, error, data } = useQuery(Currency,{variables: {currency: props.data}});
+  //   {
+  //     rates(currency: "USD") {
+  //       currency
+  //       rate
+  //     }
+  //   }
+  // `);
   console.log(data);
+  console.log(typeof(props.data));
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error :(</p>;
